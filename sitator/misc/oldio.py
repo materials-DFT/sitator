@@ -3,6 +3,7 @@ import numpy as np
 import tempfile
 import tarfile
 import os
+from io import BytesIO
 
 import ase
 import ase.io
@@ -52,8 +53,12 @@ def from_file(file):
                     input.extract(member, path = tmpdir)
                     structure = ase.io.read(os.path.join(tmpdir, member.name), format = 'xyz')
             else:
+                array_file = BytesIO()
+                array_file.write(f.read())
+                array_file.seek(0)
                 basename = os.path.splitext(os.path.basename(member.name))[0]
-                data = np.load(f)
+                data = np.load(array_file)
+                array_file.close()
                 if basename.startswith("site_attr"):
                     site_attrs[basename.split('-')[1]] = data
                 elif basename.startswith("edge_attr"):
