@@ -36,6 +36,7 @@ class MergeSitesByDynamics(MergeSites):
                  distance_threshold = 1.0,
                  post_check_thresh_factor = 1.5,
                  check_types = True,
+				 iterlimit = 100,
                  markov_parameters = {}):
 
         super().__init__(
